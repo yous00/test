@@ -57,7 +57,7 @@ class DiscordGSM():
 
     def start(self):
         self.print_to_console(f'Starting DiscordGSM v{VERSION}...')
-        self.query_servers.start()    
+        self.query_servers.start()
 
     def cancel(self):
         self.query_servers.cancel()
@@ -66,10 +66,10 @@ class DiscordGSM():
 
     async def on_ready(self):
         # set username and avatar
-        icon_file_name = 'images/discordgsm' + ('DGSM_TOKEN' in os.environ and '-heroku' or '') + '.png'
+        icon_file_name = 'images/zzk' + ('DGSM_TOKEN' in os.environ and '-heroku' or '') + '.jpg'
         with open(icon_file_name, 'rb') as file:
             try:
-                await bot.user.edit(username='DiscordGSM', avatar=file.read())
+                await bot.user.edit(username='ZZK-Bot', avatar=file.read())
             except:
                 pass
 
@@ -103,7 +103,7 @@ class DiscordGSM():
         self.print_to_console(f'{server_count} servers queried')
         await self.bot.wait_until_ready()
         await self.on_ready()
-    
+
     # send messages to discord
     @tasks.loop(seconds=REFRESH_RATE)
     async def print_servers(self):
@@ -122,7 +122,7 @@ class DiscordGSM():
             self.message_error_count = 0
             self.print_to_console(f'Message ERROR reached, refreshing...')
             await self.refresh_discord_embed()
-    
+
     # refresh discord presense
     @tasks.loop(minutes=PRESENCE_RATE)
     async def presense_load(self):
@@ -139,8 +139,8 @@ class DiscordGSM():
                 if data and server_cache.get_status() == 'Online':
                     total_activeplayers += int(data['players'])
                     total_maxplayers += int(data['maxplayers'])
-                  
-            activity_text = f'{total_activeplayers}/{total_maxplayers} active players' if total_maxplayers > 0 else '0 players' 
+
+            activity_text = f'{total_activeplayers}/{total_maxplayers} active players' if total_maxplayers > 0 else '0 players'
         elif PRESENCE_TYPE >= 3:
             if self.current_display_server >= len(self.server_list):
                 self.current_display_server = 0
@@ -178,10 +178,10 @@ class DiscordGSM():
         channels = list(set(channels)) # remove duplicated channels
         for channel in channels:
             await bot.get_channel(channel).purge(check=lambda m: m.author==bot.user)
-        
+
         # send new discord embed
         self.messages = [await bot.get_channel(s['channel']).send(content=('frontMessage' in s and s['frontMessage'].strip()) and s['frontMessage'] or None, embed=self.get_embed(s)) for s in self.server_list]
-    
+
     def print_to_console(self, value):
         print(datetime.now().strftime('%Y-%m-%d %H:%M:%S: ') + value)
 
@@ -230,7 +230,7 @@ class DiscordGSM():
 
             embed.add_field(name=FIELD_STATUS, value=f'{emoji} **{status}**', inline=True)
             embed.add_field(name=f'{FIELD_ADDRESS}:{FIELD_PORT}', value=f'`{data["addr"]}:{data["port"]}`', inline=True)
- 
+
             flag_emoji = ('country' in server) and (':flag_' + server['country'].lower() + f': {server["country"]}') or ':united_nations: Unknown'
             embed.add_field(name=FIELD_COUNTRY, value=flag_emoji, inline=True)
 
@@ -257,9 +257,9 @@ class DiscordGSM():
             color = discord.Color.from_rgb(240, 71, 71) # red
             embed = discord.Embed(title='ERROR', description=f'{FIELD_STATUS}: :warning: **Fail to query**', color=color)
             embed.add_field(name=f'{FIELD_ADDRESS}:{FIELD_PORT}', value=f'{server["addr"]}:{server["port"]}', inline=True)
-        
-        embed.set_footer(text=f'DiscordGSM v{VERSION} | Game Server Monitor | Last update: ' + datetime.now().strftime('%a, %Y-%m-%d %I:%M:%S%p'), icon_url='https://github.com/DiscordGSM/DiscordGSM/raw/master/images/discordgsm.png')
-        
+
+        embed.set_footer(text=f'Last update: ' + datetime.now().strftime('%a, %Y-%m-%d %I:%M:%S%p'), icon_url='https://cdn.discordapp.com/attachments/527107853178109972/727196821771780096/zzk-discord.jpg')
+
         return embed
 
     def get_server_list(self):
@@ -269,7 +269,7 @@ bot = commands.Bot(command_prefix=DGSM_PREFIX)
 
 # command: dgsm
 # display dgsm informations
-@bot.command(name='dgsm', aliases=['discordgsm'], brief='Display DiscordGSM\'s informations')
+@bot.command(name='ZZK-Bot', aliases=['ZZK Bot'], brief='Display DiscordGSM\'s informations')
 @commands.check_any(commands.has_role(ROLE_ID), commands.is_owner())
 async def _dgsm(ctx):
     title = f'Command: {DGSM_PREFIX}dgsm'
